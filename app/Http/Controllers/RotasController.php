@@ -16,9 +16,9 @@ class RotasController extends Controller
     		'rotaid' => intval($rotaid),
     		'slottype' => 'shift',
     		]
-    	)->get();
+    	)->whereNotNull('staffid')->get();
 
-
+    	$rota = RotaSlotStaff::sortDayByAscendingOrder($rota);
 
 
     	return view('rotas.show', ['rota' => $rota ]);
