@@ -3,12 +3,16 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
+use App\SingleShift;
+
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class DisplayDayNumberStaffIdAndShiftTimesTest extends TestCase
-{
+{   
+    use DatabaseMigrations;
+
     /** @test */
     function user_can_view_staff_shift_day_of_a_shop_for_one_week()
     {
