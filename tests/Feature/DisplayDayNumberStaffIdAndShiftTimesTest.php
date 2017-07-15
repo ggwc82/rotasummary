@@ -22,7 +22,6 @@ class DisplayDayNumberStaffIdAndShiftTimesTest extends TestCase
             'daynumber' => 6,
             'staffid' => 3,
         ])->first();
-        var_dump($rota);
 
         // Act
         // View the rota staff data
@@ -32,12 +31,12 @@ class DisplayDayNumberStaffIdAndShiftTimesTest extends TestCase
         $response->assertStatus(200);
         //Assert
         // See the rota staff details
-        $response->assertSee(332);
-        $response->assertSee(6);
-        $response->assertSee(3);
+        $response->assertSee('332');
+        $response->assertSee('6');
+        $response->assertSee('3');
         $response->assertSee('shift');
         $response->assertSee('19:00:00');
         $response->assertSee('03:00:00');
-        $response->assertSee(8.00);
+        $response->assertSee('8.00');
     }
 }
