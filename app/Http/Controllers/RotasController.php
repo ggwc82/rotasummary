@@ -14,13 +14,14 @@ class RotasController extends Controller
     	$rota = RotaSlotStaff::where(
     		[
     		'rotaid' => intval($rotaid),
-    		'slottype' => 'shift',
+    		// 'slottype' => 'shift',
     		]
     	)->whereNotNull('staffid')->get();
 
-    	$rota = RotaSlotStaff::sortDayByAscendingOrder($rota);
+    	$rota = RotaSlotStaff::sortStaffIdByAscendingOrder($rota);
 
-
+    	$rota = RotaSlotStaff::groupShiftDataByStaffId($rota);
+    	
     	return view('rotas.show', ['rota' => $rota ]);
     }
 }
