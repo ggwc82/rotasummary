@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use App\SingleShift;
+use App\RotaSlotStaff;
 
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -18,30 +18,26 @@ class DisplayDayNumberStaffIdAndShiftTimesTest extends TestCase
     {
 
         // Arrange
-        // Import the data for table 'rota_slot_staff'
-        $singleShift = SingleShift::create([
-            'rotaid' => 332,
+        $rota = RotaSlotStaff::where([
             'daynumber' => 6,
             'staffid' => 3,
-            'slottype' => 'shift',
-            'starttime' => '19:00:00', //this will need to be converted to time object
-            'endtime' => '03:00:00',
-            'workhours' => 8.00, // consider saving this as an integer to avoid floating point errors
-        ]);
+        ])->first();
+        var_dump($rota);
 
         // Act
         // View the rota staff data
 
-        $this->visit('/rotas/' . $singleShift->rotaid);
+        $response = $this->get('/rotas/' . $rota->rotaid);
 
+        $response->assertStatus(200);
         //Assert
         // See the rota staff details
-        $this->see(332);
-        $this->see(6);
-        $this->see(3);
-        $this->see('shift');
-        $this->see('19:00:00');
-        $this->see('03:00:00');
-        $this->see(8.00);
+        $response->assertSee(332);
+        $response->assertSee(6);
+        $response->assertSee(3);
+        $response->assertSee('shift');
+        $response->assertSee('19:00:00');
+        $response->assertSee('03:00:00');
+        $response->assertSee(8.00);
     }
 }
