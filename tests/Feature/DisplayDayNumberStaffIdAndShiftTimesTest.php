@@ -39,4 +39,19 @@ class DisplayDayNumberStaffIdAndShiftTimesTest extends TestCase
         $response->assertSee('03:00:00');
         $response->assertSee('8.00');
     }
+
+    /** @test */
+    function user_cannot_view_a_dayoff_record()
+    {
+        $rota = RotaSlotStaff::where([
+            'slottype' => 'dayoff',
+        ])->first();
+
+
+        $response = $this->get('/rotas/' . $rota->rotaid);
+
+        $response->assertStatus(200);
+        $response->assertDontSee('dayoff');
+
+    }
 }

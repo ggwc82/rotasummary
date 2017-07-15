@@ -11,7 +11,14 @@ class RotasController extends Controller
 
     {	
 
-    	$rota = RotaSlotStaff::where('rotaid', intval($rotaid))->get();
+    	$rota = RotaSlotStaff::where(
+    		[
+    		'rotaid' => intval($rotaid),
+    		'slottype' => 'shift',
+    		]
+    	)->get();
+
+
 
 
     	return view('rotas.show', ['rota' => $rota ]);
