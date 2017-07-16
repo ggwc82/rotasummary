@@ -29,6 +29,7 @@ class DisplayDayNumberStaffIdAndShiftTimesTest extends TestCase
         $response = $this->get('/rotas/' . $rota->rotaid);
 
         $response->assertStatus(200);
+        
         //Assert
         // See the rota staff details
         $response->assertSee('332');
@@ -39,6 +40,4 @@ class DisplayDayNumberStaffIdAndShiftTimesTest extends TestCase
         $response->assertSee('03:00:00');
         $response->assertSee('8.00');
     }
-
-
 }

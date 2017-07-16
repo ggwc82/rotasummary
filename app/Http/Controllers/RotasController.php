@@ -18,23 +18,25 @@ class RotasController extends Controller
     	)->whereNotNull('staffid')->get();
 
     	
-    	// stage 2 - sort by staff id
+    	// stage 2 - sort rota by staff id
     	$rota = RotaSlotStaff::sortStaffIdByAscendingOrder($rota);
+
+
+    	// stage 3 - find unique staff ids
+    	$uniqueStaffIds = RotaSlotStaff::whereNotNull('staffid')->distinct()->get(['staffid']);
+
 
     	$daysCount = [0, 1, 2, 3, 4, 5, 6];
 
-
-    	$uniqueStaffIds = RotaSlotStaff::whereNotNull('staffid')->distinct()->get(['staffid']);
-
+    	//stage 4 - build array of total hours worked per day
     	$hoursWorked = [];
 
     	foreach($daysCount as $day) {
-    		$sumHoursForDay = RotaSlotStaff::where('daynumber', $day)->sum('workhours');
+    		$sumHoursForDay = RotaSlotStaff::whereNotNull('staffid')->where('daynumber', $day)->sum('workhours');
     		$hoursWorked[] = number_format($sumHoursForDay, 2);
     	}
+    
 
-    	// $rota = RotaSlotStaff::groupShiftDataByStaffId($rota);
-    	
     	return view('rotas.show', ['rota' => $rota, 'days' => $daysCount, 'staffids' => $uniqueStaffIds, 'hoursworked' => $hoursWorked]);
     }
 }
