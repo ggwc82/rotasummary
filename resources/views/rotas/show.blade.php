@@ -23,8 +23,10 @@
 
 
 	<tr>
-		<td>TOTALS</td>
-
+		<td>Total Hours</td>
+		@foreach ($hoursworked as $totalhours)
+			<td>{{$totalhours}}</td>
+		@endforeach
 	</tr>
 </table>
 

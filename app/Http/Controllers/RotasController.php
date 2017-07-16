@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 use App\RotaSlotStaff;
 
 class RotasController extends Controller
@@ -23,10 +25,16 @@ class RotasController extends Controller
 
 
     	$uniqueStaffIds = RotaSlotStaff::whereNotNull('staffid')->distinct()->get(['staffid']);
-    	
+
+    	$hoursWorked = [];
+
+    	foreach($daysCount as $day) {
+    		$sumHoursForDay = RotaSlotStaff::where('daynumber', $day)->sum('workhours');
+    		$hoursWorked[] = number_format($sumHoursForDay, 2);
+    	}
 
     	// $rota = RotaSlotStaff::groupShiftDataByStaffId($rota);
     	
-    	return view('rotas.show', ['rota' => $rota, 'days' => $daysCount, 'staffids' => $uniqueStaffIds]);
+    	return view('rotas.show', ['rota' => $rota, 'days' => $daysCount, 'staffids' => $uniqueStaffIds, 'hoursworked' => $hoursWorked]);
     }
 }
