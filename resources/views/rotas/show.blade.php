@@ -2,26 +2,30 @@
 
 <table style="width:100%; text-align: center">
 	<tr>
-		<th>Day Number</th>
 		<th>Staff ID</th>
-		<th>Slot Type</th>
-		<th>Start Time</th>
-		<th>End Time</th>
-		<th>Work Hours</th>
+		
+		@foreach($days as $day)
+			<th>Day {{$day}}</th>
+		@endforeach
 	</tr>
 
-	@foreach ($rota as $record)
-
+	@foreach ($staffids as $staffid)
 	<tr>
-		<td>{{ $record->daynumber }}</td>
-		<td>{{ $record->staffid }}</td>
-		<td>{{ $record->slottype }}</td>
-		<td>{{ $record->starttime }}</td>
-		<td>{{ $record->endtime }}</td>
-		<td>{{ number_format($record->workhours, 2) }}</td>
+	<td>{{ $staffid->staffid }}</td>
+		@foreach ($rota as $record)
+			@if ($record->staffid == $staffid->staffid)
+				<td>{{ $record->starttime }} - {{ $record->endtime }}</td>
+			@endif
 
+		@endforeach
 	</tr>
-
 	@endforeach
 
+
+	<tr>
+		<td>TOTALS</td>
+
+	</tr>
 </table>
+
+

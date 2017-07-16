@@ -16,17 +16,5 @@ class RotaSlotStaff extends Model
 		});
     }
 
-    public static function groupShiftDataByStaffId($query)
-    {
-    	// for each unique staff id
-    	$uniqueArray = array_unique($query);
-    	var_dump($uniqueArray);
-
-    	// if slot type is shift, then pop [starttime, endtime, workhours]
-
-    	// else if slot type is dayoff, then pop []
-
-
-    }
 
 }
