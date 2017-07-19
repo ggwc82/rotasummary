@@ -48,13 +48,13 @@ For this final feature, my revised approach for calculating the number of minute
 
 5. In the case where less than 2 staff either match or completely overlap the shop's shift, bi-section the shop's shift into two equal sub-shifts and recursively call the same function described in step 3, on the two independent sub-shifts. 
 
-6. At each sub-division level, only those sub-shifts which are not entirely covered by a minimum of 2 staff members will be further subdivided and passed back into the recusive function. The end result will be when the level of division is such that each sub-shift represents 1 minute, at which point our recursive function will sum up all the remaining sub-shifts that are not covered by 2 or more staff members. This sum represents the number of minutes during the shop's opening times when there is only one member of staff working (with the assumption that there is never a period where no staff are working).
+6. At each sub-division level, only those sub-shifts which are not entirely covered by a minimum of 2 staff members will be further subdivided and passed back into the recursive function. The end result will be when the level of division is such that each sub-shift represents 1 minute, at which point our code should sum up all the remaining sub-shifts that are not covered by 2 or more staff members. This sum represents the number of minutes during the shop's opening times when there is only one member of staff working (with the assumption that there is never a period where no staff are working).
 
 
 If we give further consideration to actual context of the use case, that staff members would generally start and end their shifts at hourly, half-hourly or quarter-hour intervals, the implementation describe above can be further optimised through sub-dividing at a faster rate than halving, such that:
 
 **12 hour shift -> 12 x 1 hour sub-shifts -> 24 x 30min sub-shifts -> 48 x 15min sub-shifts -> 144 x 5min sub-shifts**
 
-In the dataset supplied, there was one instance of a staff member starting their shift at 5 minutes past the hour. If we consider this as the opposite edge case scenario, we do not need to further divide to a minute resolution level and hence all single-staffed periods would be multiples of 5 minute each.
+In the dataset supplied, there was one instance of a staff member starting their shift at 5 minutes past the hour. If we consider this as the opposite edge case scenario (the case requiring the most computational time), we do not need to further divide to a minute resolution level and hence all single-staffed periods would thus be multiples of 5 minutes.
 
 
