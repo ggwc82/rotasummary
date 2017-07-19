@@ -32,8 +32,29 @@ My overall goal for this application were to strictly adhere to TDD princples, w
 Considerations for extensibility, each rota is a seperate view and is represented by the unique url endpoint /rotas/{rotaid}. Also, the code has been designed such that it can accommodate a futher increase (or decrease) in staff levels for the shop.
 
 
-# Thoughts on final feature implementation
+## Thoughts on final feature implementation (updated 19-07-2017)
 
-Although I haven't written any code directly for this feature, I have spent some time researching on how to implement this. My approach would be to convert the start and end times of each shift into a unix timestamp in seconds, then create arrays to hold every second to cover this period for each employee.
+For this final feature, my revised approach for calculating the number of minutes a shop is staffed by a single team member described below would be more efficient than the method I previously proposed. The algorithm I propose falls within the context of divide and conquer and bi-section methods, and is of a recursive nature where at each stage, the problem is further divided into two or more subproblems and solved independently. 
 
-After doing this, I would then push all the timestamp values into a single array, from which I can then extract only the timestamps which are unique. Running a count on this new array will yield the number of seconds the shop is staffed by a single member, and thus the number of minutes can be inferred.
+### Logical steps for implementation
+
+1. Identify shop opening and closing times, and the difference between e.g. 12 hours. Lets call this the shop shift.
+
+2. For the staff working that day, sort them according to shift length in descending order.
+
+3. Create a function that compares each staff shift against the shop's shift (start and end times).
+
+4. As soon as this function detects a minimum of 2 staff with shifts that are equal or greater the shop's shift, return 0 minutes. This is the best possible scenario in terms of speed of computation, and can be considered an edge case.
+
+5. In the case where less than 2 staff either match or completely overlap the shop's shift, bi-section the shop's shift into two equal sub-shifts and recursively call the same function described in step 3, on the two independent sub-shifts. 
+
+6. At each sub-division level, only those sub-shifts which are not entirely covered by a minimum of 2 staff members will be further subdivided and passed back into the recusive function. The end result will be when the level of division is such that each sub-shift represents 1 minute, at which point our recursive function will sum up all the remaining sub-shifts that are not covered by 2 or more staff members. This sum represents the number of minutes during the shop's opening times when there is only one member of staff working (with the assumption that there is never a period where no staff are working).
+
+
+If we give further consideration to actual context of the use case, that staff members would generally start and end their shifts at hourly, half-hourly or quarter-hour intervals, the implementation describe above can be further optimised through sub-dividing at a faster rate than halving, such that:
+
+**12 hour shift -> 12 x 1 hour sub-shifts -> 24 x 30min sub-shifts -> 48 x 15min sub-shifts -> 144 x 5min sub-shifts**
+
+In the dataset supplied, there was one instance of a staff member starting their shift at 5 minutes past the hour. If we consider this as the opposite edge case scenario, we do not need to further divide to a minute resolution level and hence all single-staffed periods would be multiples of 5 minute each.
+
+
